@@ -1,0 +1,283 @@
+swagger: '2.0'
+info:
+  title: chaosArsenal fault injection
+  description: chaosArsenal fault injection module API specification
+  contact:
+    name: chaos-arsenal
+    url: https://www.sangfor.com.cn/
+    email: chaos-arsenal@sangfor.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+basePath: /arsenal/v1
+paths:
+  /faults:
+    get:
+      description: Listing faults injected.
+      parameters:
+        - name: id
+          description: The id generated during fault injected.
+          in: query
+          required: false
+          type: string
+          minLength: 16
+          maxLength: 16
+          pattern: ^[a-f0-9]*$
+        - name: domain
+          description: Fault domain for a fault.
+          in: query
+          required: false
+          type: string
+          minLength: 2
+          maxLength: 64
+        - name: fault-type
+          description: The type of the injected fault.
+          in: query
+          required: false
+          type: string
+          minLength: 2
+          maxLength: 128
+          pattern: ^[a-z0-9-]*$
+        - name: status
+          description: The status of injected fault.
+          in: query
+          required: false
+          type: string
+          enum:
+            - injected
+            - removed
+            - succeeded
+        - name: inject-time
+          description: The start time of fault injection.
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: update-time
+          description: The start time of fault injection.
+          in: query
+          required: false
+          type: string
+          format: date-time
+      responses:
+        '200':
+          $ref: '#/responses/Infos200Response'
+        '404':
+          $ref: '#/responses/Error404Response'
+        '500':
+          $ref: '#/responses/Error500Response'
+    post:
+      description: Inject a fault.
+      parameters:
+        - name: info
+          description: Details about the fault to inject.
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/FaultCreate'
+      responses:
+        '200':
+          $ref: '#/responses/200Response'
+        '400':
+          $ref: '#/responses/Error400Response'
+        '500':
+          $ref: '#/responses/Error500Response'
+  /faults/{id}:
+    parameters:
+      - name: id
+        description: The id generated during fault injected.
+        in: path
+        type: string
+        minLength: 16
+        maxLength: 16
+        pattern: ^[a-f0-9]*$
+        required: true
+    delete:
+      description: Delete the specific fault.
+      responses:
+        '200':
+          $ref: '#/responses/Infos200Response'
+        '404':
+          $ref: '#/responses/Error404Response'
+        '500':
+          $ref: '#/responses/Error500Response'
+definitions:
+  FaultCreate:
+    type: object
+    description: A fault to be injected.
+    properties:
+      env:
+        description: Fault inject running environment.
+        type: string
+        minLength: 2
+        maxLength: 64
+      domain:
+        description: Fault domain for a fault.
+        type: string
+        minLength: 2
+        maxLength: 64
+      fault-type:
+        description: Fault type to inject
+        type: string
+        minLength: 2
+        maxLength: 128
+        pattern: ^[a-z0-9-]*$
+      timeout:
+        description: The inject fault auto remove time
+        type: string
+        minLength: 2
+        maxLength: 64
+        pattern: ^(?:(\d+d):)?(?:(\d+h):)?(?:(\d+m):)?(?:(\d+s))?$
+      params:
+        description: >
+          Parameters for the fault, a collection of key-value pairs.
+          Each fault type has a specific group of valid keys.
+        type: object
+        default: {}
+        additionalProperties:
+          type: string
+          description: Value for the parameter, Can be an empty string.
+          minLength: 0
+          maxLength: 1024
+    required:
+      - env
+      - domain
+      - fault-type
+  Code:
+    description: Response status code
+    format: int64
+    type: integer
+  Id:
+    description: The id generated during fault injected
+    type: string
+  Message:
+    description: Response descriptions
+    format: freetext
+    minLength: 0
+    maxLength: 4096
+    type: string
+  200Response:
+    description: Response successfully
+    properties:
+      code:
+        $ref: '#/definitions/Code'
+      id:
+        $ref: '#/definitions/Id'
+      message:
+        $ref: '#/definitions/Message'
+    required:
+      - code
+      - id
+      - message
+    type: object
+  Infos200Response:
+    description: Query operation request successfully
+    properties:
+      code:
+        $ref: '#/definitions/Code'
+      infos:
+        type: array
+        items:
+          $ref: '#/definitions/OpsInfo'
+        minItems: 0
+        maxItems: 100
+    required:
+      - code
+      - infos
+  Error400Response:
+    description: Bad Request
+    properties:
+      code:
+        $ref: '#/definitions/Code'
+      message:
+        $ref: '#/definitions/Message'
+    required:
+      - code
+      - message
+    type: object
+  Error404Response:
+    description: Not Found
+    properties:
+      code:
+        $ref: '#/definitions/Code'
+      message:
+        $ref: '#/definitions/Message'
+    required:
+      - code
+      - message
+    type: object
+  Error500Response:
+    description: Internal server error
+    properties:
+      code:
+        $ref: '#/definitions/Code'
+      message:
+        $ref: '#/definitions/Message'
+    required:
+      - code
+      - message
+    type: object
+  OpsInfo:
+    type: object
+    properties:
+      uuid:
+        type: string
+        description: The UUID generated during fault injected
+      domain:
+        type: string
+        description: The domain to which the fault belongs
+      faultType:
+        type: string
+        description: The fault type
+      flags:
+        type: string
+        description: >-
+          A string concatenated from the parameters obtained from the HTTP
+          request
+      private:
+        type: string
+        description: The fault type private data
+      proactiveCleanup:
+        type: boolean
+        description: Used to describe whether a fault requires proactive cleanup
+      status:
+        type: string
+        description: Describes the status of the fault
+      injectTime:
+        type: string
+        format: date-time
+        description: The time at which the fault was injected
+      updateTime:
+        type: string
+        format: date-time
+        description: >-
+          The fault corresponds to the modification time of the database table
+          entry
+responses:
+  200Response:
+    description: Response successfully
+    schema:
+      $ref: '#/definitions/200Response'
+  Infos200Response:
+    description: Response successfully
+    schema:
+      $ref: '#/definitions/Infos200Response'
+  Error400Response:
+    description: Input fault injection object error
+    schema:
+      $ref: '#/definitions/Error400Response'
+  Error404Response:
+    description: No fault's information found
+    schema:
+      $ref: '#/definitions/Error404Response'
+  Error500Response:
+    description: Server error while processing the request
+    schema:
+      $ref: '#/definitions/Error500Response'

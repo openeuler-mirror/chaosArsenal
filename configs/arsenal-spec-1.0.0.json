@@ -1,0 +1,814 @@
+{
+  "version": "v1.0",
+  "env": {
+    "os": {
+      "shortDesc": "Fault injection for operating system",
+      "longDesc": "Fault injection for operating system",
+      "domain": {
+        "file": {
+          "executor": "arsenal-os",
+          "shortDesc": "File reference fault",
+          "longDesc": "File reference fault",
+          "faultTypes": {
+            "readonly": {
+              "shortDesc": "file readonly",
+              "longDesc": "File readonly",
+              "object": "path",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "path": {
+                  "usage": "file path",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            },
+            "unexecuted": {
+              "shortDesc": "file unexecuted",
+              "longDesc": "File unexecuted",
+              "object": "path",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "path": {
+                  "usage": "File path",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            },
+            "lost": {
+              "shortDesc": "file lost",
+              "longDesc": "File lost",
+              "object": "path",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "path": {
+                  "usage": "file path",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            },
+            "corruption": {
+              "shortDesc": "file corruption",
+              "longDesc": "File corruption",
+              "object": "path",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "path": {
+                  "usage": "file path",
+                  "shortHand": "p",
+                  "required": true
+                },
+                "offset": {
+                  "usage": "File corruption offset",
+                  "shortHand": "o",
+                  "required": true
+                },
+                "length": {
+                  "usage": "File corruption length",
+                  "shortHand": "l",
+                  "required": true
+                },
+                "backup-path": {
+                  "usage": "Corruption file backup path",
+                  "shortHand": "b",
+                  "required": false
+                }
+              }
+            }
+          }
+        },
+        "filesystem": {
+          "executor": "arsenal-os",
+          "shortDesc": "File system fault",
+          "longDesc": "File system fault",
+          "faultTypes": {
+            "mountpoint-space-full": {
+              "shortDesc": "mount point space full",
+              "longDesc": "Mount point space ful",
+              "object": "path",
+              "commands": {
+                "inject": {
+                  "blockExecution": false
+                },
+                "remove": {
+                  "blockExecution": false
+                }
+              },
+              "flags": {
+                "path": {
+                  "usage": "the mount point",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            },
+            "mountpoint-inode-exhaustion": {
+              "shortDesc": "mount point inode exhaustion",
+              "longDesc": "Mount point inode exhaustion",
+              "object": "path",
+              "commands": {
+                "inject": {
+                  "blockExecution": false
+                },
+                "remove": {
+                  "blockExecution": false
+                }
+              },
+              "flags": {
+                "path": {
+                  "usage": "the mount point",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            },
+            "io-overload": {
+              "shortDesc": "mixed I/O overload",
+              "longDesc": "Mixed I/O overload",
+              "object": "io-overload",
+              "commands": {
+                "inject": {
+                  "blockExecution": false
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "iomix": {
+                  "usage": "start N workers that perform a mix of sequential",
+                  "shortHand": "o",
+                  "required": true
+                },
+                "iomix-bytes": {
+                  "usage": "write N bytes(1.0MB~8.0EB) for each iomix worker process, One can specify the size as % of free space",
+                  "shortHand": "s",
+                  "required": true
+                },
+                "nice": {
+                  "usage": "set io load program nice value(-20~19)",
+                  "shortHand": "n",
+                  "required": false
+                }
+              }
+            }
+          }
+        },
+        "cpu": {
+          "executor": "arsenal-os",
+          "shortDesc": "Cpu fault",
+          "longDesc": "Cpu fault",
+          "faultTypes": {
+            "overload": {
+              "shortDesc": "overloading the cpu",
+              "longDesc": "Overloading the cpu",
+              "object": "overload",
+              "commands": {
+                "inject": {
+                  "blockExecution": false
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "cpu": {
+                  "usage": "start N workers spinning on sqrt(rand())",
+                  "shortHand": "c",
+                  "required": true
+                },
+                "taskset": {
+                  "usage": "CPU affinity based on the list of CPUs provided",
+                  "shortHand": "s",
+                  "required": true
+                },
+                "nice": {
+                  "usage": "set cpu stress program nice value(-20~19)",
+                  "shortHand": "n",
+                  "required": false
+                },
+                "cpu-load": {
+                  "usage": "load  CPU  with  P percent loading for the CPU stress workers, default is 100",
+                  "shortHand": "l",
+                  "required": false
+                }
+              }
+            },
+            "offline": {
+              "shortDesc": "cpu core offline",
+              "longDesc": "Cpu core offline fault",
+              "object": "cpuid",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "cpuid": {
+                  "usage": "single core or core range(1,4,6-7)",
+                  "shortHand": "c",
+                  "required": true
+                }
+              }
+            }
+          }
+        },
+        "memory": {
+          "executor": "arsenal-os",
+          "shortDesc": "Memory fault",
+          "longDesc": "Memory fault",
+          "faultTypes": {
+            "overload": {
+              "shortDesc": "overloading the memory",
+              "longDesc": "Overloading the memory",
+              "object": "overload",
+              "commands": {
+                "inject": {
+                  "blockExecution": false
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "vm": {
+                  "usage": "start N workers continuously calling mmap(2)/munmap(2) and writing to the allocated memory",
+                  "shortHand": "n",
+                  "required": true
+                },
+                "vm-bytes": {
+                  "usage": "mmap N bytes(4.0KB~256.0TB) per vm worker, the size as % of total available memory",
+                  "shortHand": "s",
+                  "required": true
+                }
+              }
+            }
+          }
+        },
+        "process": {
+          "executor": "arsenal-os",
+          "shortDesc": "Process fault",
+          "longDesc": "Process fault",
+          "faultTypes": {
+            "choking": {
+              "shortDesc": "choking",
+              "longDesc": "Process choking",
+              "object": "pid",
+              "commands": {
+                "inject": {
+                  "blockExecution": false
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "pid": {
+                  "usage": "process id",
+                  "shortHand": "p",
+                  "required": true
+                },
+                "interval": {
+                  "usage": "the process choking interval time(s)",
+                  "shortHand": "i",
+                  "required": true
+                }
+              }
+            },
+            "exit-abnormal": {
+              "shortDesc": "exit abnormally",
+              "longDesc": "Process exit abnormally",
+              "object": "pid",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "pid": {
+                  "usage": "process id",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            },
+            "hang": {
+              "shortDesc": "hang",
+              "longDesc": "Process hang",
+              "object": "pid",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "pid": {
+                  "usage": "process id",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            }
+          }
+        },
+        "system": {
+          "executor": "arsenal-os",
+          "shortDesc": "System fault",
+          "longDesc": "System fault",
+          "faultTypes": {
+            "panic": {
+              "shortDesc": "make system panic",
+              "longDesc": "Will perform a system crash by a NULL pointer dereference",
+              "object": "NA",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                }
+              }
+            },
+            "reboot-abnormal": {
+              "shortDesc": "reboot system abnormal",
+              "longDesc": "Will immediately reboot the system without syncing or unmounting your disks",
+              "object": "NA",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                }
+              }
+            },
+            "oom": {
+              "shortDesc": "oom killer to kill a memory hog process",
+              "longDesc": "Oom killer to kill a memory hog process",
+              "object": "NA",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                }
+              }
+            },
+            "file-systems-readonly": {
+              "shortDesc": "will attempt to remount all mounted file systems readonly",
+              "longDesc": "Will attempt to remount all mounted file systems readonly",
+              "object": "NA",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                }
+              }
+            },
+            "service-stop": {
+              "shortDesc": "stop system service",
+              "longDesc": "Stop system service",
+              "object": "name",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": false
+                }
+              },
+              "flags": {
+                "name": {
+                  "usage": "service name, example: sshd,network,firewalld",
+                  "shortHand": "n",
+                  "required": true
+                }
+              }
+            },
+            "service-restart": {
+              "shortDesc": "restart system service",
+              "longDesc": "Restart system service",
+              "object": "name",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "name": {
+                  "usage": "service name, example: sshd,network,firewalld",
+                  "shortHand": "n",
+                  "required": true
+                }
+              }
+            },
+            "time-jump": {
+              "shortDesc": "time temporally jumps",
+              "longDesc": "Linux system time temporally jumps",
+              "object": "time-jump",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "direction": {
+                  "usage": "system time jump directions, option: backwards,forwards",
+                  "shortHand": "d",
+                  "required": true
+                },
+                "interval":{
+                  "usage": "interval of time jump, example: 1h,1m,1s,1h:1s,1h:1m:1s",
+                  "shortHand": "i",
+                  "required": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "hardware": {
+      "shortDesc": "Fault injection for hardware",
+      "longDesc": "Fault injection for hardware",
+      "domain": {
+        "disk" : {
+          "executor": "arsenal-hardware",
+          "shortDesc": "Disk reference fault",
+          "longDesc": "Disk reference fault",
+          "faultTypes" : {
+            "offline": {
+              "shortDesc": "remove block device form current system",
+              "longDesc": "Remove block device form current system",
+              "object": "device",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "device": {
+                  "usage": "the disk device name that needs to be offline, example: sdh",
+                  "shortHand": "n",
+                  "required": true
+                }
+              }
+            },
+            "blocked": {
+              "shortDesc": "set block device state as blocked",
+              "longDesc": "Set block device state as blocked",
+              "object": "device",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "device": {
+                  "usage": "the disk device name that needs to be blocked, example: sdh",
+                  "shortHand": "n",
+                  "required": true
+                }
+              }
+            }
+          }
+        },
+        "pcie" : {
+          "executor": "arsenal-hardware",
+          "shortDesc": "Pcie reference fault",
+          "longDesc": "Pcie reference fault",
+          "faultTypes" : {
+            "offline": {
+              "shortDesc": "remove pcie device form current system",
+              "longDesc": "Remove pcie device form current system",
+              "object": "NA",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "bdf": {
+                  "usage": "pcie device id(domain:bus:device:function), example: 0000:1a:00.1",
+                  "shortHand": "b",
+                  "required": true
+                }
+              }
+            },
+            "reset-abnormal": {
+              "shortDesc": "reset pcie device",
+              "longDesc": "Reset pcie device",
+              "object": "NA",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "bdf": {
+                  "usage": "pcie device id(domain:bus:device:function), example: 0000:1a:00.1",
+                  "shortHand": "b",
+                  "required": true
+                }
+              }
+            }
+          }
+        },
+        "network": {
+          "executor": "arsenal-hardware",
+          "shortDesc": "Network reference fault",
+          "longDesc": "Network reference fault",
+          "faultTypes": {
+            "corrupt": {
+              "shortDesc": "package corrupt",
+              "longDesc": "Network interface package corrupt",
+              "object": "interface",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "interface": {
+                  "usage": "network interface name",
+                  "shortHand": "i",
+                  "required": true
+                },
+                "percent": {
+                  "usage": "percent",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            },
+            "loss": {
+              "shortDesc": "package loss",
+              "longDesc": "Network interface package loss",
+              "object": "interface",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "interface": {
+                  "usage": "network interface name",
+                  "shortHand": "i",
+                  "required": true
+                },
+                "percent": {
+                  "usage": "percent",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            },
+            "duplicate": {
+              "shortDesc": "package duplicate",
+              "longDesc": "Network interface package duplicate",
+              "object": "interface",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "interface": {
+                  "usage": "network interface name",
+                  "shortHand": "i",
+                  "required": true
+                },
+                "percent": {
+                  "usage": "percent",
+                  "shortHand": "p",
+                  "required": true
+                }
+              }
+            },
+            "delay": {
+              "shortDesc": "package transmission delay",
+              "longDesc": "Network interface package transmission delay",
+              "object": "interface",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "interface": {
+                  "usage": "network interface name",
+                  "shortHand": "i",
+                  "required": true
+                },
+                "source": {
+                  "usage": "source ip specification",
+                  "shortHand": "s",
+                  "required": false
+                },
+                "source-port": {
+                  "usage": "source port specification",
+                  "required": false
+                },
+                "source-subnet-mask": {
+                  "usage": "source net interface subnet mask",
+                  "required": false
+                },
+                "destination": {
+                  "usage": "destination ip specification",
+                  "shortHand": "d",
+                  "required": false
+                },
+                "destination-port": {
+                  "usage": "destination port specification",
+                  "required": false
+                },
+                "destination-subnet-mask": {
+                  "usage": "destination net interface subnet mask",
+                  "required": false
+                },
+                "delay": {
+                  "usage": "network delay time(default unit is us)",
+                  "required": true
+                }
+              }
+            },
+            "reorder": {
+              "shortDesc": "package reorder",
+              "longDesc": "Network interface package reorder",
+              "object": "interface",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "interface": {
+                  "usage": "network interface name",
+                  "shortHand": "i",
+                  "required": true
+                },
+                "delay": {
+                  "usage": "network delay time(default unit is us)",
+                  "shortHand": "d",
+                  "required": true
+                },
+                "percent": {
+                  "usage": "reorder percentage",
+                  "shortHand": "p",
+                  "required": true
+                },
+                "relatper": {
+                  "usage": "relative percentage",
+                  "shortHand": "r",
+                  "required": true
+                }
+              }
+            },
+            "down": {
+              "shortDesc": "interface down",
+              "longDesc": "Network interface down",
+              "object": "interface",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "interface": {
+                  "usage": "network interface name",
+                  "shortHand": "i",
+                  "required": true
+                }
+              }
+            },
+            "unavailable": {
+              "shortDesc": "interface unavailable",
+              "longDesc": "Network interface unavailable",
+              "object": "interface",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "interface": {
+                  "usage": "network interface name",
+                  "shortHand": "i",
+                  "required": true
+                }
+              }
+            },
+            "package-drop": {
+              "shortDesc": "package drop",
+              "longDesc": "Network package drop",
+              "object": "interface",
+              "commands": {
+                "inject": {
+                  "blockExecution": true
+                },
+                "remove": {
+                  "blockExecution": true
+                }
+              },
+              "flags": {
+                "interface": {
+                  "usage": "network interface name",
+                  "shortHand": "i",
+                  "required": true
+                },
+                "chain": {
+                  "usage": "path of packets in iptables",
+                  "shortHand": "c",
+                  "required": true
+                },
+                "source": {
+                  "usage": "source ip specification",
+                  "shortHand": "s",
+                  "required": false
+                },
+                "source-port": {
+                  "usage": "source port specification",
+                  "required": false
+                },
+                "destination": {
+                  "usage": "destination ip specification",
+                  "shortHand": "d",
+                  "required": false
+                },
+                "destination-port": {
+                  "usage": "destination port specification",
+                  "required": false
+                },
+                "protocol": {
+                  "usage": "protocol specification",
+                  "shortHand": "p",
+                  "required": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
