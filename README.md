@@ -19,6 +19,8 @@
 ### 软件架构
 chaosArsenal软件架构说明
 
+![输入图片说明](chaosArsenal架构图.jpg)
+
 `chaosArsenal`工具整体架构主要分为接口层、逻辑层和原子能力。
 
 
