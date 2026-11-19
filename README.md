@@ -29,7 +29,7 @@ chaosArsenal软件架构说明
 
     提供故障注入、故障清除、故障查询等接口，支持cli和http两种方式调用。
 
-    -	`cli` 部分采用`cobra`框架，初始化`root`命令之后，通过解析`arsenal-spec-1.0.0.json`配置文和输入参数补全完整命令。
+    -	`cli` 部分采用`cobra`框架，初始化`root`命令之后，通过解析`arsenal-spec-1.0.0.json`配置文件和输入参数补全完整命令。
     -   `http`部分采用`openApi`设计，用`swagger`生成`http`服务端代码，需要先将后台server服务端启动，再执行相应接口操作，启动方式参考“OpenAPI调用->启动server服务端”。
 
   - 逻辑层：
@@ -49,7 +49,7 @@ chaosArsenal软件架构说明
 #### 依赖软件
 Go 1.18.x以及以上。
 #### 编译环境
-Linux系统(已验证系统ubutnu、Centos)。
+Linux系统(已验证系统Ubuntu、CentOS)。
 #### 快速构建
 直接在Makefile所在目录下执行make命令，编译生成执行文件路径output/chaosArsenal/。
 
@@ -360,7 +360,7 @@ curl -X 'DELETE' 'http://10.103.176.172:9095/arsenal/v1/faults/5d81e8f58ef7e8a1'
   ```
 
   - 通用接口会在输入的`flags`中找到`arg1`和`arg2`的值，并将`$arg1`和`$arg2`替换成对应的值，替换之后的命令`arsenal-xxx inject xxx arg1_value arg2_value`。
-  - 通用接口会在`$arsenal_pacakge/bin/`文件夹下查找原子故障注入工具`arsenal-xxx`。
+  - 通用接口会在`$arsenal_package/bin/`文件夹下查找原子故障注入工具`arsenal-xxx`。
   - `blockExecution`为阻塞执行字段，`true`则阻塞执行，`arsenal`会等待原子命令返回后再退出，`timeout`时间为15s，超过15s则会上报执行失败；`false`则非阻塞执行，`arsenal`不会等待原子命令返回，直接退出。
 
 - 其他字段
@@ -370,7 +370,7 @@ curl -X 'DELETE' 'http://10.103.176.172:9095/arsenal/v1/faults/5d81e8f58ef7e8a1'
 
 ### 日志文件备份
 
-​	日志路径`$arsenal_pacakge/logs/operations.log`。
+​	日志路径`$arsenal_package/logs/operations.log`。
 
 ```go
 Logger.Formatter = &logrus.TextFormatter{
@@ -397,18 +397,18 @@ Logger.SetOutput(&lumberjack.Logger{
 
 ### 能力扩展
 
-新增故障注入能力时，需要在`arsenal-spec-1.0.0.json`配置文件中增加对应的配置信息，详见如下标记信息，对于`arsenal-spec-1.0.0.json`文件中特殊字段的描述见“配置文件->JSON配置文件说明”；再将对应的执行文件放在`$arsenal_pacakge/bin/`路径下。
+新增故障注入能力时，需要在`arsenal-spec-1.0.0.json`配置文件中增加对应的配置信息，详见如下标记信息，对于`arsenal-spec-1.0.0.json`文件中特殊字段的描述见“配置文件->JSON配置文件说明”；再将对应的执行文件放在`$arsenal_package/bin/`路径下。
 
 ```json
 {
     "version": "v1.0",	
     "class": {
-      "os": {   ## chaosArsenal目前定义两类故障，分别是os和hardware，如果需要新增一个，那么需要修改源码，或是联系我们，；如果不需要，无需关心。
+      "os": {   ## chaosArsenal目前定义两类故障，分别是os和hardware，如果需要新增一个，那么需要修改源码或联系我们；如果不需要，无需关心。
         "shortDesc": "Fault injection for operating system",
         "longDesc": "Fault injection for operating system",
         "domain": {
           "file": {   ## 命名一个新的作用域
-            "executor": "arsenal-os",   ## 指定$arsenal_pacakge/bin/下执行文件名
+            "executor": "arsenal-os",   ## 指定$arsenal_package/bin/下执行文件名
             "shortDesc": "File reference fault",  ## 对作用域进行简短描述
             "longDesc": "File reference fault",   ## 对作用域进行详细描述
             "faultTypes": {
