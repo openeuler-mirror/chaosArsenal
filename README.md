@@ -1,3 +1,4 @@
+[English](./README.en.md) | 简体中文
 # chaosArsenal故障注入工具
 
 ### 工具简介
