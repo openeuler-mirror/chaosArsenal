@@ -258,7 +258,7 @@ curl -X 'DELETE' 'http://10.103.176.172:9095/arsenal/v1/faults/5d81e8f58ef7e8a1'
 - `private`
   私有数据区，用在`timeout`的场景，`cli`场景下用于记录后台执行进程的`pid`和`timeout`延迟清理的时间。`http`场景用于记录延迟清理的时间。
 - `status`
-  当前故障的状态，当前设计存在三个状态，`injected`表示故障注入处于生效状态，`removed`表示故障已经清理，`successed`表示故障已经注入且不需要清理。
+  当前故障的状态，当前设计存在三个状态，`injected`表示故障注入处于生效状态，`removed`表示故障已经清理，`succeed`表示故障已经注入且不需要清理。
 - `inject_time`
   故障注入的时间
 - `update_time`
@@ -279,7 +279,7 @@ curl -X 'DELETE' 'http://10.103.176.172:9095/arsenal/v1/faults/5d81e8f58ef7e8a1'
     "Flags": "--path /home/curtis/work/arsenal-os/kk.sh",
     "Private": "",
     "ProactiveCleanup": true,
-    "Status": "Removed",
+    "Status": "removed",
     "InjectTime": "2023-11-23T02:39:40.184Z",
     "UpdateTime": "2023-11-23T02:39:49.334Z"
 }
@@ -287,7 +287,7 @@ curl -X 'DELETE' 'http://10.103.176.172:9095/arsenal/v1/faults/5d81e8f58ef7e8a1'
 
 #### `sqlite`数据库表项清理
 
-​		注：当`arsenal.db`中有效数据库表项大于`1000000`条时，清理状态为`Removed`和`Succeed`的数据表项。
+​		注：当`arsenal.db`中有效数据库表项大于`1000000`条时，清理状态为`removed`和`succeed`的数据表项。
 
 ### 配置文件
 
